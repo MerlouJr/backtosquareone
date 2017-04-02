@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Recall</string>
+    <string name="add_textbox_hint">Add a ToDo item</string>
+    <string name="add_button_text">Add</string>
+    <string name="service_title">Mobile Apps </string>
+    <string name="menu_refresh">Refresh</string>
+    <string name="checkbox_text">Item Text</string>
+    <string name="lunch">You ate chicken for lunch</string>
+    <string name="general_eat">You ate cereal for breakfast. You ate chicken for lunch</string>
+    <string name="appointment2">You have an appointment with the doctor at 2 pm</string>
+    <string name="need">You have an appointment with the doctor at 2 pm. You will go to the market at 5 pm to buy food for dinner.</string>
+    <string name="wallet">You placed your wallet near your computer</string>
+    <string name="primaryKey">79a9cfa25053490aa61a0df687294ff7</string>
+    <string name="ttsKey">93c883759b974b4aa6e2c09378b064af</string>
+    <string name="authenticationUri"></string>
+    <string name="welcome">Welcome to Recall. If you want to access recall mode, press the headset button once. To access exercise mode press the headset button twice</string>
+
+</resources>
