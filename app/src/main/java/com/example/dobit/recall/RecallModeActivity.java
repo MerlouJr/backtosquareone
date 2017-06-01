@@ -237,6 +237,7 @@ public class RecallModeActivity extends AppCompatActivity implements ISpeechReco
 
         textToSpeech = new TextToSpeech(this, this);
 
+
         this._logText = (EditText) findViewById(R.id.etMessage);
         this.m_waitSeconds = this.getMode() == SpeechRecognitionMode.ShortPhrase ? 20 : 200;
         this.LogRecognitionStart();

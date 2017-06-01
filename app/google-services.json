@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "780234209693",
+    "firebase_url": "https://recall-169204.firebaseio.com",
+    "project_id": "recall-169204",
+    "storage_bucket": "recall-169204.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:780234209693:android:a434cedd23f8237e",
+        "android_client_info": {
+          "package_name": "com.example.dobit.recall"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "780234209693-jc4g6bksm3deb002hv817i9b9hqknbne.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dobit.recall",
+            "certificate_hash": "cefe87c5456ebb0f285e7c7399ab2bc0e4d4cee8"
+          }
+        },
+        {
+          "client_id": "780234209693-478lk059395kc07f4fqn594i3t0u8o00.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDx57SLAyBvga5Zo8nBuUUBJv1H2ePi0ro"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "780234209693-478lk059395kc07f4fqn594i3t0u8o00.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
