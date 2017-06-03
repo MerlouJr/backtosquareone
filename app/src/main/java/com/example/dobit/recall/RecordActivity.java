@@ -32,9 +32,9 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
 
     ImageView record;
     String time;
-    String days;
-    String weeks;
-    String addHours;
+    String days = "";
+    String weeks = "";
+    String addHours = "";
     long dayToMs = 86400000;
     long weeksToMs = 604800000;
     long HourToMs = 3600000;
@@ -117,9 +117,15 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
 
                             if(split[count].contains("weeks") && rec.contains("weeks from now")){
                                 weeks = split[count-1];
+
+                                if(weeks.equals("two")){
+                                    weeks = "2";
+                                }else if(weeks.equals("three")){
+                                    weeks = "3";
+                                }else if(split[count-1].contains("for") && split[count].contains("weeks") || weeks.equals("four")){
+                                    weeks = "4";
+                                }
                             }
-
-
                         }
 
                         //If the time string has ':' then split it and get the hours and minutes, else get only the hours, there is no minutes
@@ -143,15 +149,13 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
                                 hours = hours + 0;
                         }
 
-                        if(rec.contains("tomorrow") || rec.contains("a week from now")){
 
-                        }else {
+
                             alarmIntent.putExtra(AlarmClock.EXTRA_SKIP_UI, true); //Don't let the user get into the alarm app
                             alarmIntent.putExtra(AlarmClock.EXTRA_HOUR, hours);
                             alarmIntent.putExtra(AlarmClock.EXTRA_MINUTES, minutes);
                             alarmIntent.putExtra(AlarmClock.EXTRA_MESSAGE, rec);
                             startActivity(alarmIntent); //Set alarm
-                        }
                     }
 
 
@@ -186,10 +190,10 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
                     }else if(rec.contains("an hour from now") || rec.contains("in an hour")){
                         cv.put(CalendarContract.Events.DTSTART, mils + HourToMs);
                         cv.put(CalendarContract.Events.DTEND, mils + HourToMs);
-                    }else if(!days.isEmpty()){
+                    }else if(!days.equals("")){
                         cv.put(CalendarContract.Events.DTSTART, mils + (dayToMs*Integer.parseInt(days)));
                         cv.put(CalendarContract.Events.DTEND, mils + (dayToMs*Integer.parseInt(days)));
-                    }else if(!weeks.isEmpty()){
+                    }else if(!weeks.equals("")){
                         cv.put(CalendarContract.Events.DTSTART, mils + (weeksToMs*Integer.parseInt(weeks)));
                         cv.put(CalendarContract.Events.DTEND, mils + (weeksToMs*Integer.parseInt(weeks)));
                     }
