@@ -36,6 +36,7 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
     String weeks;
     String addHours;
     long dayToMs = 86400000;
+    long weeksToMs = 604800000;
     long HourToMs = 3600000;
     long mils;
     int hours;
@@ -89,26 +90,36 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
                     Intent alarmIntent = new Intent(AlarmClock.ACTION_SET_ALARM);
 
                     //If the record has a number, get its time
-                    if(rec.matches(".*\\d+.*") && !rec.contains("tomorrow") && !rec.contains("days from now") && !rec.contains("weeks from now")) {
+                    if(rec.matches(".*\\d+.*")) {
                         for (int count = 0; count < split.length; count++) {
 
-                            if (split[count].contains(":") && rec.contains("p.m.") || rec.contains("a.m.")) {
+                            if (split[count].contains(":") && rec.contains("p.m.") || rec.contains("am")) {
                                 time = split[count];
-                            } else if (split[count].matches(".*\\d+.*") && rec.contains("p.m.") || rec.contains("a.m.")) {
+                            } else if (split[count].matches(".*\\d+.*")) {
                                 time = split[count];
                             }
 
                             if(split[count].contains("days") && rec.contains("days from now")){
                                 days = split[count-1];
+
+                                if(days.equals("two")){
+                                    days = "2";
+                                }else if(days.equals("three")){
+                                    days = "3";
+                                }else if(split[count-1].contains("for") && split[count].contains("days") || days.equals("four")){
+                                    days = "4";
+                                }else if(days.equals("five")){
+                                    days = "5";
+                                }else if(days.equals("six")){
+                                    days = "6";
+                                }
                             }
 
-                            if(split[count].contains("weeks") && rec.contains("week from now")){
-                                days = split[count-1];
+                            if(split[count].contains("weeks") && rec.contains("weeks from now")){
+                                weeks = split[count-1];
                             }
 
-                            if(split[count].contains("hours") && rec.contains("hours from now")){
-                                addHours = split[count-1];
-                            }
+
                         }
 
                         //If the time string has ':' then split it and get the hours and minutes, else get only the hours, there is no minutes
@@ -132,12 +143,15 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
                                 hours = hours + 0;
                         }
 
+                        if(rec.contains("tomorrow") || rec.contains("a week from now")){
 
-                        alarmIntent.putExtra(AlarmClock.EXTRA_SKIP_UI, true); //Don't let the user get into the alarm app
-                        alarmIntent.putExtra(AlarmClock.EXTRA_HOUR, hours);
-                        alarmIntent.putExtra(AlarmClock.EXTRA_MINUTES, minutes);
-                        alarmIntent.putExtra(AlarmClock.EXTRA_MESSAGE, rec);
-                        startActivity(alarmIntent); //Set alarm
+                        }else {
+                            alarmIntent.putExtra(AlarmClock.EXTRA_SKIP_UI, true); //Don't let the user get into the alarm app
+                            alarmIntent.putExtra(AlarmClock.EXTRA_HOUR, hours);
+                            alarmIntent.putExtra(AlarmClock.EXTRA_MINUTES, minutes);
+                            alarmIntent.putExtra(AlarmClock.EXTRA_MESSAGE, rec);
+                            startActivity(alarmIntent); //Set alarm
+                        }
                     }
 
 
@@ -172,7 +186,14 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
                     }else if(rec.contains("an hour from now") || rec.contains("in an hour")){
                         cv.put(CalendarContract.Events.DTSTART, mils + HourToMs);
                         cv.put(CalendarContract.Events.DTEND, mils + HourToMs);
-                    }else{
+                    }else if(!days.isEmpty()){
+                        cv.put(CalendarContract.Events.DTSTART, mils + (dayToMs*Integer.parseInt(days)));
+                        cv.put(CalendarContract.Events.DTEND, mils + (dayToMs*Integer.parseInt(days)));
+                    }else if(!weeks.isEmpty()){
+                        cv.put(CalendarContract.Events.DTSTART, mils + (weeksToMs*Integer.parseInt(weeks)));
+                        cv.put(CalendarContract.Events.DTEND, mils + (weeksToMs*Integer.parseInt(weeks)));
+                    }
+                    else{
                         cv.put(CalendarContract.Events.DTSTART, mils);
                         cv.put(CalendarContract.Events.DTEND, mils);
                     }
