@@ -47,12 +47,14 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
     int currentHour;
     int minutes;
     int counter = 0;
-    int month;
+    String month;
+    String strMonth;
+    int monthNumber;
     int monthDay;
     int length;
     DatabaseReference databaseNotes;
     DateFormat dateFormat;
-    Calendar calendar;
+    Calendar calendar = Calendar.getInstance();
     Date date;
     Date currentDate;
     String dateString;
@@ -146,6 +148,7 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
                     String rec = result.get(0).toString();
                     String[] split = rec.split(" ");
                     String[] timeSplit;
+                    String[] thSplit;
                     Intent alarmIntent = new Intent(AlarmClock.ACTION_SET_ALARM);
 
                     //If the record has a number, get its time
@@ -157,6 +160,7 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
                             } else if (split[count].matches(".*\\d+.*")) {
                                 time = split[count];
                             }
+
 
 //                            if(split[count].contains("hours") && rec.contains("hours from now")){
 //                                addHours = split[count-1];
@@ -203,6 +207,55 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
                             }
                         }
 
+                        for(int j = 0; j < split.length; j++) {
+                            if (split[j].contains("January")) {
+                                month = "January";
+                                monthNumber = 1;
+                            } else if (split[j].contains("February")) {
+                                month = "February";
+                                monthNumber = 2;
+                            } else if (split[j].contains("March")) {
+                                month = "March";
+                                monthNumber = 3;
+                            } else if (split[j].contains("April")) {
+                                month = "April";
+                                monthNumber = 4;
+                            } else if (split[j].contains("May") || split[j].contains("may")) {
+                                month = "May";
+                                monthNumber = 5;
+                            } else if (split[j].contains("June")) {
+                                month = "June";
+                                monthNumber = 6;
+                            } else if (split[j].contains("July")) {
+                                month = "July";
+                                monthNumber = 7;
+                            } else if (split[j].contains("August")) {
+                                month = "August";
+                                monthNumber = 8;
+                            } else if (split[j].contains("September")) {
+                                month = "September";
+                                monthNumber = 9;
+                            } else if (split[j].contains("October")) {
+                                month = "October";
+                                monthNumber = 10;
+                            } else if (split[j].contains("November")) {
+                                month = "November";
+                                monthNumber = 11;
+                            } else if (split[j].contains("December")) {
+                                month = "December";
+                                monthNumber = 12;
+                            } else {
+                                monthNumber = calendar.get(Calendar.MONTH) + 1;
+                            }
+
+                            if (split[j].matches(".*\\d+.*") && split[j - 1].contains(month)) {
+                                strMonth = split[j];
+                                thSplit = strMonth.split("th");
+                                monthDay = Integer.parseInt(thSplit[0]);
+                            }
+                        }
+
+
                         //If the time string has ':' then split it and get the hours and minutes, else get only the hours, there is no minutes
                         if (time.contains(":")) {
                             timeSplit = time.split(":");
@@ -232,12 +285,14 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
                             alarmIntent.putExtra(AlarmClock.EXTRA_MINUTES, minutes);
                             alarmIntent.putExtra(AlarmClock.EXTRA_MESSAGE, rec);
                             startActivity(alarmIntent); //Set alarm
+
+
                     }
 
 
                     //For plotting calendar purposes
-                    calendar = Calendar.getInstance();
-                    dateString = (calendar.get(Calendar.YEAR) + "/" + (calendar.get(Calendar.MONTH)+1) + "/" + calendar.get(Calendar.DAY_OF_MONTH) + " " + hours + ":" + minutes + ":" + "00");
+
+                    dateString = (calendar.get(Calendar.YEAR) + "/" + monthNumber + "/" + monthDay + " " + hours + ":" + minutes + ":" + "00");
 
 
                     //Parse date then convert date to milliseconds
