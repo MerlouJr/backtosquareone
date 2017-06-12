@@ -1,10 +1,12 @@
 package com.example.dobit.recall;
 
+import android.*;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.provider.AlarmClock;
 import android.provider.CalendarContract;
@@ -35,17 +37,30 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
     String days = "";
     String weeks = "";
     String addHours = "";
+    boolean pm = false;
+    boolean am = false;
     long dayToMs = 86400000;
     long weeksToMs = 604800000;
     long HourToMs = 3600000;
     long mils;
     int hours;
+    int currentHour;
     int minutes;
+    int counter = 0;
+    int month;
+    int monthDay;
+    int length;
     DatabaseReference databaseNotes;
     DateFormat dateFormat;
     Calendar calendar;
     Date date;
+    Date currentDate;
     String dateString;
+    String[] cutDate;
+    String[] cutTime;
+    Cursor cursor;
+    ArrayList<String> al = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +69,50 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
         record = (ImageView) findViewById(R.id.ivRecord);
         record.setOnClickListener(this);
         databaseNotes = FirebaseDatabase.getInstance().getReference("notes");
+        currentDate = new Date();
+        cutDate = currentDate.toString().split(" ");
+        cutTime = cutDate[3].split(":");
+        currentHour = Integer.parseInt(cutTime[0]);
+
+        if(currentHour > 12){
+            pm = true;
+        }else{
+            am = true;
+        }
+
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        cursor = getContentResolver().query(CalendarContract.Events.CONTENT_URI, null, null, null, null);
+
+        while (cursor.moveToNext()){
+            if(cursor != null){
+                int id_1 = cursor.getColumnIndex(CalendarContract.Events._ID);
+                int id_2 = cursor.getColumnIndex(CalendarContract.Events.TITLE);
+                int id_3 = cursor.getColumnIndex(CalendarContract.Events.DESCRIPTION);
+                int id_4 = cursor.getColumnIndex(CalendarContract.Events.EVENT_LOCATION);
+                int id_5 = cursor.getColumnIndex(CalendarContract.Events.DTSTART);
+
+                String idVal = cursor.getColumnName(id_1);
+                String title = cursor.getString(id_2);
+
+
+                String desc = cursor.getString(id_3);
+                String eventLoc = cursor.getString(id_4);
+                String dateStart = cursor.getString(id_5);
+
+                counter++;
+
+                if(counter > 7) {
+                    al.add(dateStart);
+                }
+                //Toast.makeText(this, desc + " " + dateStart, Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this, "Event does not exist", Toast.LENGTH_SHORT).show();
+            }
+
+            length++;
+        }
 
     }
 
@@ -99,6 +158,22 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
                                 time = split[count];
                             }
 
+//                            if(split[count].contains("hours") && rec.contains("hours from now")){
+//                                addHours = split[count-1];
+//
+//                                if(addHours.equals("two")){
+//                                    addHours = "2";
+//                                }else if(addHours.equals("three")){
+//                                    addHours = "3";
+//                                }else if(split[count-1].contains("for") && split[count].contains("hours") || addHours.equals("four")){
+//                                    addHours = "4";
+//                                }else if(addHours.equals("five")){
+//                                    addHours = "5";
+//                                }else if(addHours.equals("six")){
+//                                    addHours = "6";
+//                                }
+//                            }
+
                             if(split[count].contains("days") && rec.contains("days from now")){
                                 days = split[count-1];
 
@@ -142,7 +217,8 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
                         if (rec.contains("PM") || rec.contains("p.m.")) {
                             if (hours != 12)
                                 hours = hours + 12;
-                        } else if (rec.contains("AM") || rec.contains("a.m.")) {
+
+                        }else if (rec.contains("AM") || rec.contains("a.m.")) {
                             if (hours == 12)
                                 hours = 0;
                             else
@@ -162,6 +238,7 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
                     //For plotting calendar purposes
                     calendar = Calendar.getInstance();
                     dateString = (calendar.get(Calendar.YEAR) + "/" + (calendar.get(Calendar.MONTH)+1) + "/" + calendar.get(Calendar.DAY_OF_MONTH) + " " + hours + ":" + minutes + ":" + "00");
+
 
                     //Parse date then convert date to milliseconds
                     Date parseDate = new Date();
@@ -188,8 +265,8 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
                         cv.put(CalendarContract.Events.DTSTART, mils + (dayToMs*7));
                         cv.put(CalendarContract.Events.DTEND, mils + (dayToMs*7));
                     }else if(rec.contains("an hour from now") || rec.contains("in an hour")){
-                        cv.put(CalendarContract.Events.DTSTART, mils + HourToMs);
-                        cv.put(CalendarContract.Events.DTEND, mils + HourToMs);
+                        cv.put(CalendarContract.Events.DTSTART, calendar.getTimeInMillis() + HourToMs);
+                        cv.put(CalendarContract.Events.DTEND, calendar.getTimeInMillis() + HourToMs);
                     }else if(!days.equals("")){
                         cv.put(CalendarContract.Events.DTSTART, mils + (dayToMs*Integer.parseInt(days)));
                         cv.put(CalendarContract.Events.DTEND, mils + (dayToMs*Integer.parseInt(days)));
@@ -216,6 +293,7 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
                     notes.setDate(dateFormat.format(date));
                     notes.setNote(rec);
                     databaseNotes.child(id).setValue(notes);
+
 
 
                     Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, cv);

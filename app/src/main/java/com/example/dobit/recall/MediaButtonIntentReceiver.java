@@ -47,15 +47,10 @@ public class MediaButtonIntentReceiver extends BroadcastReceiver {
 
                     if (d == 1) {
                         Toast.makeText(context, "Recall mode", Toast.LENGTH_SHORT).show();
-                        Intent recallIntent = new Intent(context.getApplicationContext(), RecallModeActivity.class);
-                        recallIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(recallIntent);
+                        Intent recordIntent = new Intent(context.getApplicationContext(), RecallModeActivity.class);
+                        recordIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        context.startActivity(recordIntent);
                     }
-                    //else if (d == 1 && cn.toString().contains("ExerciseMode")){
-    //                    Toast.makeText(context, "Visual Exercise", Toast.LENGTH_SHORT).show();
-//                        Intent VisualIntent = new Intent(context.getApplicationContext(), VisualExerciseActivity.class);
-//                        context.startActivity(VisualIntent);
-   //                 }
 
                     // double click *********************************
                     if (d == 2) {

@@ -19,6 +19,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recall_login);
+//        startService(new Intent(this, NotificationService.class));
         login = (Button) findViewById(R.id.logInBtn);
         login.setOnClickListener(this);
     }
