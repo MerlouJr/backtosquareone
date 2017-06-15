@@ -15,6 +15,7 @@ import android.speech.tts.TextToSpeech;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -37,24 +38,35 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
     String days = "";
     String weeks = "";
     String addHours = "";
+    String timeStart = "";
+    String timeEnd = "";
+    int hourStart;
+    int hourEnd;
+    int minutesStart;
+    int minutesEnd;
+    String dateStart = "";
+    String dateEnd = "";
     boolean pm = false;
     boolean am = false;
     long dayToMs = 86400000;
     long weeksToMs = 604800000;
     long HourToMs = 3600000;
     long mils;
+    long startMils;
+    long endMils;
     int hours;
     int currentHour;
     int minutes;
     int counter = 0;
-    String month;
-    String strMonth;
-    int monthNumber;
-    int monthDay;
+    int timeLength;
+    Calendar calendar = Calendar.getInstance();
+    String month = "n/a";
+    String strMonth = "";
+    int monthNumber = 0;
+    int monthDay = 0;
     int length;
     DatabaseReference databaseNotes;
     DateFormat dateFormat;
-    Calendar calendar = Calendar.getInstance();
     Date date;
     Date currentDate;
     String dateString;
@@ -75,6 +87,9 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
         cutDate = currentDate.toString().split(" ");
         cutTime = cutDate[3].split(":");
         currentHour = Integer.parseInt(cutTime[0]);
+
+        monthDay = calendar.get(Calendar.DAY_OF_MONTH);
+        monthNumber = calendar.get(Calendar.MONTH)+1;
 
         if(currentHour > 12){
             pm = true;
@@ -155,11 +170,64 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
                     if(rec.matches(".*\\d+.*")) {
                         for (int count = 0; count < split.length; count++) {
 
-                            if (split[count].contains(":") && rec.contains("p.m.") || rec.contains("am")) {
-                                time = split[count];
-                            } else if (split[count].matches(".*\\d+.*")) {
-                                time = split[count];
+                            if (split[count].contains("January")) {
+                                month = "January";
+                                monthNumber = 1;
+                            } else if (split[count].contains("February")) {
+                                month = "February";
+                                monthNumber = 2;
+                            } else if (split[count].contains("March")) {
+                                month = "March";
+                                monthNumber = 3;
+                            } else if (split[count].contains("April")) {
+                                month = "April";
+                                monthNumber = 4;
+                            } else if (split[count].contains("May") || split[count].contains("may")) {
+                                month = "May";
+                                monthNumber = 5;
+                            } else if (split[count].contains("June")) {
+                                month = "June";
+                                monthNumber = 6;
+                            } else if (split[count].contains("July")) {
+                                month = "July";
+                                monthNumber = 7;
+                            } else if (split[count].contains("August")) {
+                                month = "August";
+                                monthNumber = 8;
+                            } else if (split[count].contains("September")) {
+                                month = "September";
+                                monthNumber = 9;
+                            } else if (split[count].contains("October")) {
+                                month = "October";
+                                monthNumber = 10;
+                            } else if (split[count].contains("November")) {
+                                month = "November";
+                                monthNumber = 11;
+                            } else if (split[count].contains("December")) {
+                                month = "December";
+                                monthNumber = 12;
                             }
+
+                            if (split[count].matches(".*\\d+.*")) {
+                                if(split[count-1].contains(month)) {
+                                    strMonth = split[count];
+                                    Log.d("Month day", strMonth);
+                                    thSplit = strMonth.split("th");
+                                    monthDay = Integer.parseInt(thSplit[0]);
+                                }
+                            }
+
+//                            if (split[count].contains(":") && rec.contains("p.m.") || rec.contains("am")) {
+//                                time = split[count];
+//                            } else if (split[count].matches(".*\\d+.*")) {
+//                                time = split[count];
+//                            }
+
+//                             if(split[count].contains("p.m.") || split[count].contains("a.m.")){
+//                                 if(split[count].matches(".*\\d+.*")){
+//                                     time = split[count];
+//                                 }
+//                             }
 
 
 //                            if(split[count].contains("hours") && rec.contains("hours from now")){
@@ -177,6 +245,60 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
 //                                    addHours = "6";
 //                                }
 //                            }
+
+                            if(split[count].contains("p.m.") || split[count].contains("a.m.") && split[count-1].matches(".*\\d+.*")){
+
+                                if(split[count-2].equals("to")){
+                                    timeStart = split[count-4];
+                                    timeEnd = split[count-1];
+                                    timeLength = timeStart.length();
+
+                                    if(timeLength > 1){
+                                        timeSplit = timeStart.split(":");
+                                        hourStart = Integer.parseInt(timeSplit[0]);
+                                        minutesStart  = Integer.parseInt(timeSplit[1]);
+
+                                    }else{
+                                        hourStart = Integer.parseInt(timeStart);
+                                        minutesStart = 0;
+                                    }
+
+                                    timeLength = timeEnd.length();
+
+                                    if(timeLength > 1){
+                                        timeSplit = timeEnd.split(":");
+                                        hourEnd = Integer.parseInt(timeSplit[0]);
+                                        minutesEnd = Integer.parseInt(timeSplit[1]);
+                                    }else{
+                                        hourEnd = Integer.parseInt(timeEnd);
+                                        minutesEnd = 0;
+                                    }
+                                }else{
+                                    timeStart = split[count-1];
+                                    timeEnd = timeStart;
+                                    timeLength = timeStart.length();
+
+                                    if(timeLength > 1){
+                                        timeSplit = timeStart.split(":");
+                                        hourStart = Integer.parseInt(timeSplit[0]);
+                                        hours = hourStart;
+                                        minutesStart = Integer.parseInt(timeSplit[1]);
+                                        minutes = minutesStart;
+                                        hourEnd = hourStart;
+                                        minutesEnd = minutesStart;
+
+                                    }else{
+                                        hourStart = Integer.parseInt(timeStart);
+                                        hours = hourStart;
+                                        minutesStart = 0;
+                                        minutes = minutesStart;
+                                        hourEnd = hourStart;
+                                        minutesEnd = minutesStart;
+                                    }
+                                }
+
+                            }
+
 
                             if(split[count].contains("days") && rec.contains("days from now")){
                                 days = split[count-1];
@@ -207,75 +329,31 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
                             }
                         }
 
-                        for(int j = 0; j < split.length; j++) {
-                            if (split[j].contains("January")) {
-                                month = "January";
-                                monthNumber = 1;
-                            } else if (split[j].contains("February")) {
-                                month = "February";
-                                monthNumber = 2;
-                            } else if (split[j].contains("March")) {
-                                month = "March";
-                                monthNumber = 3;
-                            } else if (split[j].contains("April")) {
-                                month = "April";
-                                monthNumber = 4;
-                            } else if (split[j].contains("May") || split[j].contains("may")) {
-                                month = "May";
-                                monthNumber = 5;
-                            } else if (split[j].contains("June")) {
-                                month = "June";
-                                monthNumber = 6;
-                            } else if (split[j].contains("July")) {
-                                month = "July";
-                                monthNumber = 7;
-                            } else if (split[j].contains("August")) {
-                                month = "August";
-                                monthNumber = 8;
-                            } else if (split[j].contains("September")) {
-                                month = "September";
-                                monthNumber = 9;
-                            } else if (split[j].contains("October")) {
-                                month = "October";
-                                monthNumber = 10;
-                            } else if (split[j].contains("November")) {
-                                month = "November";
-                                monthNumber = 11;
-                            } else if (split[j].contains("December")) {
-                                month = "December";
-                                monthNumber = 12;
-                            } else {
-                                monthNumber = calendar.get(Calendar.MONTH) + 1;
-                            }
-
-                            if (split[j].matches(".*\\d+.*") && split[j - 1].contains(month)) {
-                                strMonth = split[j];
-                                thSplit = strMonth.split("th");
-                                monthDay = Integer.parseInt(thSplit[0]);
-                            }
-                        }
 
 
-                        //If the time string has ':' then split it and get the hours and minutes, else get only the hours, there is no minutes
-                        if (time.contains(":")) {
-                            timeSplit = time.split(":");
-                            hours = Integer.parseInt(timeSplit[0]);
-                            minutes = Integer.parseInt(timeSplit[1]);
-                        } else{
-                            hours = Integer.parseInt(time);
-                            minutes = 0;
-                        }
+
+
 
 
                         if (rec.contains("PM") || rec.contains("p.m.")) {
-                            if (hours != 12)
+                            if (hours != 12) {
                                 hours = hours + 12;
+                                hourStart = hourStart + 12;
+                                hourEnd = hourEnd + 12;
+                            }
 
                         }else if (rec.contains("AM") || rec.contains("a.m.")) {
-                            if (hours == 12)
+                            if (hours == 12) {
                                 hours = 0;
-                            else
+                                hourStart = 0;
+                                hourEnd = 0;
+                            }
+                            else {
                                 hours = hours + 0;
+                                hourStart = hourStart + 0;
+                                hourEnd = hourEnd + 0;
+
+                            }
                         }
 
 
@@ -287,23 +365,50 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
                             startActivity(alarmIntent); //Set alarm
 
 
+                    }else{
+                        mils = calendar.getTimeInMillis();
                     }
+
+                    if(monthDay == 0){
+                        monthDay = calendar.get(Calendar.DAY_OF_MONTH);
+                    }
+
+                    if(monthNumber == 0 ){
+                        monthNumber = calendar.get(Calendar.MONTH)+1;
+                    }
+
+
 
 
                     //For plotting calendar purposes
 
-                    dateString = (calendar.get(Calendar.YEAR) + "/" + monthNumber + "/" + monthDay + " " + hours + ":" + minutes + ":" + "00");
+//                    dateString = (calendar.get(Calendar.YEAR) + "/" + monthNumber + "/" + monthDay + " " + hours + ":" + minutes + ":" + "00");
 
 
                     //Parse date then convert date to milliseconds
-                    Date parseDate = new Date();
-                    try {
-                        parseDate = dateFormat.parse(dateString);
-                    } catch (ParseException e) {
+//                    Date parseDate = new Date();
+//                    Date parse
+//                    try {
+//                        parseDate = dateFormat.parse(dateString);
+//                    } catch (ParseException e) {
+//                        e.printStackTrace();
+//                    }
+//                    mils = parseDate.getTime();
+
+                    dateStart = (calendar.get(Calendar.YEAR) + "/" + monthNumber + "/" + monthDay + " " + hourStart + ":" + minutesStart + ":" + "00");
+                    dateEnd = (calendar.get(Calendar.YEAR) + "/" + monthNumber + "/" + monthDay + " " + hourEnd + ":" + minutesEnd + ":" + "00");
+
+                    Date parseStart = new Date();
+                    Date parseEnd = new Date();
+
+                    try{
+                        parseStart = dateFormat.parse(dateStart);
+                        parseEnd = dateFormat.parse(dateEnd);
+                    }catch (ParseException e){
                         e.printStackTrace();
                     }
-                    mils = parseDate.getTime();
-
+                    startMils = parseStart.getTime();
+                    endMils = parseEnd.getTime();
 
 
                     ContentResolver cr = this.getContentResolver();
@@ -314,29 +419,33 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
 
                     //Future events
                     if(rec.contains("tomorrow") || rec.contains("a day from now")) {
-                        cv.put(CalendarContract.Events.DTSTART, mils + dayToMs);
-                        cv.put(CalendarContract.Events.DTEND, mils + dayToMs);
+                        cv.put(CalendarContract.Events.DTSTART, startMils + dayToMs);
+                        cv.put(CalendarContract.Events.DTEND, endMils + dayToMs);
                     }else if(rec.contains("next week") || rec.contains("a week from now")){
-                        cv.put(CalendarContract.Events.DTSTART, mils + (dayToMs*7));
-                        cv.put(CalendarContract.Events.DTEND, mils + (dayToMs*7));
+                        cv.put(CalendarContract.Events.DTSTART, startMils + (dayToMs*7));
+                        cv.put(CalendarContract.Events.DTEND, endMils + (dayToMs*7));
                     }else if(rec.contains("an hour from now") || rec.contains("in an hour")){
                         cv.put(CalendarContract.Events.DTSTART, calendar.getTimeInMillis() + HourToMs);
                         cv.put(CalendarContract.Events.DTEND, calendar.getTimeInMillis() + HourToMs);
                     }else if(!days.equals("")){
-                        cv.put(CalendarContract.Events.DTSTART, mils + (dayToMs*Integer.parseInt(days)));
-                        cv.put(CalendarContract.Events.DTEND, mils + (dayToMs*Integer.parseInt(days)));
+                        cv.put(CalendarContract.Events.DTSTART, startMils + (dayToMs*Integer.parseInt(days)));
+                        cv.put(CalendarContract.Events.DTEND, endMils + (dayToMs*Integer.parseInt(days)));
                     }else if(!weeks.equals("")){
-                        cv.put(CalendarContract.Events.DTSTART, mils + (weeksToMs*Integer.parseInt(weeks)));
-                        cv.put(CalendarContract.Events.DTEND, mils + (weeksToMs*Integer.parseInt(weeks)));
+                        cv.put(CalendarContract.Events.DTSTART, startMils + (weeksToMs*Integer.parseInt(weeks)));
+                        cv.put(CalendarContract.Events.DTEND, endMils + (weeksToMs*Integer.parseInt(weeks)));
                     }
                     else{
-                        cv.put(CalendarContract.Events.DTSTART, mils);
-                        cv.put(CalendarContract.Events.DTEND, mils);
+                        cv.put(CalendarContract.Events.DTSTART, startMils);
+                        cv.put(CalendarContract.Events.DTEND, endMils);
                     }
                     //
 
                     cv.put(CalendarContract.Events.CALENDAR_ID, 1);
                     cv.put(CalendarContract.Events.EVENT_TIMEZONE, Calendar.getInstance().getTimeZone().getID());
+
+                    //reset
+                    monthDay = 0;
+                    monthNumber = 0;
 
                     if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
                         return;
