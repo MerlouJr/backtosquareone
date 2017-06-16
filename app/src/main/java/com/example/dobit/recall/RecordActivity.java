@@ -40,6 +40,7 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
     String addHours = "";
     String timeStart = "";
     String timeEnd = "";
+    int startRecord = 0;
     int hourStart;
     int hourEnd;
     int minutesStart;
@@ -91,6 +92,13 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
         monthDay = calendar.get(Calendar.DAY_OF_MONTH);
         monthNumber = calendar.get(Calendar.MONTH)+1;
 
+        Intent recordIntent = getIntent();
+        startRecord = Integer.parseInt(recordIntent.getExtras().getString("Record"));
+
+        if(startRecord == 1){
+            promptSpeechInput();
+        }
+
         if(currentHour > 12){
             pm = true;
         }else{
@@ -131,6 +139,14 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
             length++;
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.d("CDA", "onBackPressed Called");
+        Intent setIntent = new Intent(this, LandingPageActivity.class);
+        startActivity(setIntent);
+        finish();
     }
 
     @Override
@@ -446,6 +462,7 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
                     //reset
                     monthDay = 0;
                     monthNumber = 0;
+                    startRecord = 0;
 
                     if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
                         return;

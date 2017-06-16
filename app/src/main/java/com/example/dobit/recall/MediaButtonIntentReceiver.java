@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Handler;
 import android.view.KeyEvent;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ public class MediaButtonIntentReceiver extends BroadcastReceiver {
     }
 
     static int d = 0;
+    String record = "1";
     @Override
     public void onReceive(final Context context, Intent intent) {
 
@@ -46,8 +48,9 @@ public class MediaButtonIntentReceiver extends BroadcastReceiver {
                     // single click *******************************
 
                     if (d == 1) {
-                        Toast.makeText(context, "Recall mode", Toast.LENGTH_SHORT).show();
-                        Intent recordIntent = new Intent(context.getApplicationContext(), RecallModeActivity.class);
+                        Toast.makeText(context, "Record mode", Toast.LENGTH_SHORT).show();
+                        Intent recordIntent = new Intent(context.getApplicationContext(), RecordActivity.class);
+                        recordIntent.putExtra("Record", record);
                         recordIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(recordIntent);
                     }
@@ -55,9 +58,9 @@ public class MediaButtonIntentReceiver extends BroadcastReceiver {
                     // double click *********************************
                     if (d == 2) {
                         Toast.makeText(context, "Exercise mode", Toast.LENGTH_SHORT).show();
-                        Intent exerciseIntent = new Intent(context.getApplicationContext(), ExerciseModeActivity.class);
-                        exerciseIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        context.startActivity(exerciseIntent);
+//                        Intent exerciseIntent = new Intent(context.getApplicationContext(), ExerciseModeActivity.class);
+//                        exerciseIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        context.startActivity(exerciseIntent);
                     }
                     d = 0;
                 }

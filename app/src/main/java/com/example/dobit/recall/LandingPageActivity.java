@@ -1,7 +1,10 @@
 package com.example.dobit.recall;
 
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
@@ -51,7 +54,10 @@ public class LandingPageActivity extends AppCompatActivity
         etQuestion = (EditText) findViewById(R.id.etQ);
         textToSpeech = new TextToSpeech(this, this);
 
-
+        ((AudioManager)getSystemService(AUDIO_SERVICE)).registerMediaButtonEventReceiver(
+                new ComponentName(
+                        getPackageName(),
+                        MediaButtonIntentReceiver.class.getName()));
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
