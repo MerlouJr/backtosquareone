@@ -93,7 +93,11 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
         monthNumber = calendar.get(Calendar.MONTH)+1;
 
         Intent recordIntent = getIntent();
-        startRecord = Integer.parseInt(recordIntent.getExtras().getString("Record"));
+        try {
+            startRecord = Integer.parseInt(recordIntent.getExtras().getString("Record"));
+        }catch (NullPointerException e){
+
+        }
 
         if(startRecord == 1){
             promptSpeechInput();
