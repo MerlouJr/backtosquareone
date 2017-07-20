@@ -32,12 +32,16 @@ public class NotesActivity extends AppCompatActivity {
         actionBar.setTitle("Notes");
 //        alNotes = new ArrayList<>();
         databaseNotes = FirebaseDatabase.getInstance().getReference("notes");
+        recyclerView = (RecyclerView) findViewById(R.id.rvNotes);
+        adapter = new NotesAdapter(this, alNotes);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Notes notes =  dataSnapshot.getValue(Notes.class);
                 alNotes.add(notes);
-
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -61,10 +65,6 @@ public class NotesActivity extends AppCompatActivity {
             }
         };
         databaseNotes.addChildEventListener(childEventListener);
-        recyclerView = (RecyclerView) findViewById(R.id.rvNotes);
-        adapter = new NotesAdapter(this, alNotes);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
     }
 }
