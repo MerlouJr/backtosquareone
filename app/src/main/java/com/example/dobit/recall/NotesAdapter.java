@@ -17,10 +17,10 @@ import java.util.ArrayList;
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHolder> {
 
     Context context;
-    ArrayList<NotesModel> data;
+    ArrayList<Notes> data;
     LayoutInflater inflater;
 
-    public NotesAdapter(Context context, ArrayList<NotesModel> data) {
+    public NotesAdapter(Context context, ArrayList<Notes> data) {
         this.context = context;
         this.data = data;
         inflater = LayoutInflater.from(context);
@@ -37,7 +37,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     public void onBindViewHolder(NotesViewHolder holder, int position) {
         holder.note.setText(data.get(position).note);
         holder.time.setText(data.get(position).date);
-        holder.pic.setImageResource(data.get(position).pic);
+//        holder.pic.setImageResource(data.get(position).pic);
     }
 
     @Override
@@ -46,13 +46,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     }
 
     public class NotesViewHolder extends RecyclerView.ViewHolder {
-        ImageView pic;
+        //        ImageView pic;
         TextView note;
         TextView time;
 
         public NotesViewHolder(View itemView) {
             super(itemView);
-            pic = (ImageView) itemView.findViewById(R.id.ivPic);
+//            pic = (ImageView) itemView.findViewById(R.id.ivPic);
             note = (TextView) itemView.findViewById(R.id.tvContent);
             time = (TextView) itemView.findViewById(R.id.tvTime);
         }

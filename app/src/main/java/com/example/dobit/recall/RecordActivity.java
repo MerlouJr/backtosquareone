@@ -83,6 +83,8 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_record);
         record = (ImageView) findViewById(R.id.ivRecord);
         record.setOnClickListener(this);
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Record");
         databaseNotes = FirebaseDatabase.getInstance().getReference("notes");
         currentDate = new Date();
         cutDate = currentDate.toString().split(" ");
@@ -237,34 +239,6 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
                                 }
                             }
 
-//                            if (split[count].contains(":") && rec.contains("p.m.") || rec.contains("am")) {
-//                                time = split[count];
-//                            } else if (split[count].matches(".*\\d+.*")) {
-//                                time = split[count];
-//                            }
-
-//                             if(split[count].contains("p.m.") || split[count].contains("a.m.")){
-//                                 if(split[count].matches(".*\\d+.*")){
-//                                     time = split[count];
-//                                 }
-//                             }
-
-
-//                            if(split[count].contains("hours") && rec.contains("hours from now")){
-//                                addHours = split[count-1];
-//
-//                                if(addHours.equals("two")){
-//                                    addHours = "2";
-//                                }else if(addHours.equals("three")){
-//                                    addHours = "3";
-//                                }else if(split[count-1].contains("for") && split[count].contains("hours") || addHours.equals("four")){
-//                                    addHours = "4";
-//                                }else if(addHours.equals("five")){
-//                                    addHours = "5";
-//                                }else if(addHours.equals("six")){
-//                                    addHours = "6";
-//                                }
-//                            }
 
                             if(split[count].contains("p.m.") || split[count].contains("a.m.") && split[count-1].matches(".*\\d+.*")){
 
@@ -378,11 +352,11 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
 
 
 
-                            alarmIntent.putExtra(AlarmClock.EXTRA_SKIP_UI, true); //Don't let the user get into the alarm app
-                            alarmIntent.putExtra(AlarmClock.EXTRA_HOUR, hours);
-                            alarmIntent.putExtra(AlarmClock.EXTRA_MINUTES, minutes);
-                            alarmIntent.putExtra(AlarmClock.EXTRA_MESSAGE, rec);
-                            startActivity(alarmIntent); //Set alarm
+                        alarmIntent.putExtra(AlarmClock.EXTRA_SKIP_UI, true); //Don't let the user get into the alarm app
+                        alarmIntent.putExtra(AlarmClock.EXTRA_HOUR, hours);
+                        alarmIntent.putExtra(AlarmClock.EXTRA_MINUTES, minutes);
+                        alarmIntent.putExtra(AlarmClock.EXTRA_MESSAGE, rec);
+                        startActivity(alarmIntent); //Set alarm
 
 
                     }else{
@@ -488,4 +462,3 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 }
-

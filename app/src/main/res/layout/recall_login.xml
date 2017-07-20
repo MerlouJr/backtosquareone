@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
@@ -9,7 +9,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.dobit.truancy.MainActivity">
+    tools:context="com.example.dobit.recall.LoginActivity">
 
     <EditText
         android:id="@+id/etUsername"
@@ -19,7 +19,14 @@
         android:layout_centerVertical="true"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="junndobit123@gmail.com" />
+        android:text="junndobit123@gmail.com"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="234dp"
+        app:layout_constraintHorizontal_bias="0.503" />
 
     <EditText
         android:id="@+id/etPass"
@@ -28,10 +35,16 @@
         android:layout_alignLeft="@+id/etUsername"
         android:layout_alignStart="@+id/etUsername"
         android:layout_below="@+id/textView8"
-        android:layout_marginTop="15dp"
         android:ems="10"
         android:inputType="textPassword"
-        android:text="asdasd" />
+        android:text="asdasd"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="310dp"
+        app:layout_constraintHorizontal_bias="0.503" />
 
     <Button
         android:text="LOGIN"
@@ -41,17 +54,29 @@
         android:layout_alignParentBottom="true"
         android:layout_alignLeft="@+id/etPass"
         android:layout_alignStart="@+id/etPass"
-        android:layout_marginBottom="61dp" />
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="360dp"
+        app:layout_constraintHorizontal_bias="0.503" />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="49dp"
         android:text="Username"
         android:layout_alignBottom="@+id/etUsername"
         android:layout_alignLeft="@+id/etUsername"
-        android:layout_alignStart="@+id/etUsername" />
+        android:layout_alignStart="@+id/etUsername"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="207dp"
+        app:layout_constraintHorizontal_bias="0.252" />
 
     <TextView
         android:id="@+id/textView8"
@@ -61,24 +86,47 @@
         android:layout_below="@+id/textView5"
         android:layout_alignRight="@+id/textView5"
         android:layout_alignEnd="@+id/textView5"
-        android:layout_marginTop="11dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintVertical_bias="0.619"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.218" />
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="200dp"
-        android:layout_height="100dp"
+        android:layout_width="235dp"
+        android:layout_height="150dp"
+        android:layout_above="@+id/textView5"
         android:layout_alignLeft="@+id/textView5"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/textView5"
-        android:layout_marginTop="77dp"
-        app:srcCompat="@drawable/logo" />
+        app:srcCompat="@drawable/recallblue"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="32dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.503" />
 
     <Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="430px"
+        android:layout_height="47dp"
         android:layout_alignEnd="@+id/logInBtn"
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/logInBtn"
-        android:text="Register" />
-</RelativeLayout>
+        android:layout_marginBottom="25dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:text="Register"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintHorizontal_bias="0.503" />
+</android.support.constraint.ConstraintLayout>
