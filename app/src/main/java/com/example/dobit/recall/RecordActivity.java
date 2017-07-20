@@ -31,7 +31,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class RecordActivity extends AppCompatActivity implements View.OnClickListener {
+public class RecordActivity extends AppCompatActivity implements View.OnClickListener, TextToSpeech.OnInitListener {
 
     ImageView record;
     String time;
@@ -75,12 +75,13 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
     String[] cutTime;
     Cursor cursor;
     ArrayList<String> al = new ArrayList<>();
-
+    TextToSpeech textToSpeech;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
+        textToSpeech = new TextToSpeech(this, this);
         record = (ImageView) findViewById(R.id.ivRecord);
         record.setOnClickListener(this);
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
@@ -150,8 +151,6 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onBackPressed() {
         Log.d("CDA", "onBackPressed Called");
-        Intent setIntent = new Intent(this, LandingPageActivity.class);
-        startActivity(setIntent);
         finish();
     }
 
@@ -456,9 +455,28 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
 
 
                     Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, cv);
+                    textToSpeech.speak("Okay. I got it", TextToSpeech.QUEUE_FLUSH, null);
                     Toast.makeText(this, "Successfully recorded!", Toast.LENGTH_SHORT).show();
                 }
                 break;
+        }
+    }
+
+    @Override
+    public void onInit(int status) {
+        if (status == TextToSpeech.SUCCESS) {
+            Locale locale = textToSpeech.getLanguage();
+            int result = textToSpeech.setLanguage(locale);
+
+
+            if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.e("TTS", "This language is not supported");
+
+            } else {
+
+            }
+        }else {
+            Log.e("TTS", "Initialization failed");
         }
     }
 }

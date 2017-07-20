@@ -1,5 +1,6 @@
 package com.example.dobit.recall;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -66,5 +67,10 @@ public class NotesActivity extends AppCompatActivity {
         };
         databaseNotes.addChildEventListener(childEventListener);
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }
