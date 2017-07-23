@@ -18,9 +18,11 @@ import android.speech.tts.TextToSpeech;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
@@ -89,8 +91,6 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
         record.setOnClickListener(this);
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Record");
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#459eeb")));
-
         databaseNotes = FirebaseDatabase.getInstance().getReference("notes");
         currentDate = new Date();
         cutDate = currentDate.toString().split(" ");

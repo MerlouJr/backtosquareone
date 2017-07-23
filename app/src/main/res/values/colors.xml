@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#303f9f</color>
     <color name="colorAccent">#FF4081</color>
     <color name="customTitleBackgroundColor">#459eeb</color>
+    <color name="sideNavTextColor">#393939</color>
 </resources>
