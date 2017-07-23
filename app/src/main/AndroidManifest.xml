@@ -36,10 +36,7 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".ExerciseModeActivity" />
-        <activity android:name=".RecallModeActivity" />
-        <activity android:name=".VisualExerciseActivity" />
-        <activity android:name=".AudioExerciseActivity" />
+
         <activity
             android:name=".LandingPageActivity"
             android:label="Recall"

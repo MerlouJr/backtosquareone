@@ -8,18 +8,12 @@ import android.media.session.MediaSession;
 import android.os.Build;
 import android.os.Handler;
 import android.speech.tts.*;
-import com.example.dobit.recall.Voice;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.RadioGroup;
-import android.widget.TextView;
 
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity{
 

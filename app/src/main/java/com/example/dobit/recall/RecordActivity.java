@@ -7,6 +7,9 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.provider.AlarmClock;
 import android.provider.CalendarContract;
@@ -86,6 +89,8 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
         record.setOnClickListener(this);
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Record");
+        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#459eeb")));
+
         databaseNotes = FirebaseDatabase.getInstance().getReference("notes");
         currentDate = new Date();
         cutDate = currentDate.toString().split(" ");
@@ -448,7 +453,23 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
                     //Push notes to Firebase DB
                     String id = databaseNotes.push().getKey();
                     Notes notes = new Notes();
-                    notes.setDate(dateFormat.format(date));
+                    int hourOfDayNow = calendar.get(Calendar.HOUR_OF_DAY);
+                    int minutesNow = calendar.get(Calendar.MINUTE);
+                    int monthNow = calendar.get(Calendar.MONTH);
+                    int monthDayNow = calendar.get(Calendar.DAY_OF_MONTH);
+                    int yearNow = calendar.get(Calendar.YEAR);
+
+                    String monthNowString = monthToString(monthNow);
+
+
+                    if(hourOfDayNow > 12){
+                        hourOfDayNow = hourOfDayNow - 12;
+                        notes.setDate(monthNowString + " " + monthDayNow + " " + yearNow + " " + hourOfDayNow + ":" + minutesNow + " p.m.");
+                    }else{
+                        notes.setDate(monthNowString + " " + monthDayNow + " " + yearNow + " " + hourOfDayNow + ":" + minutesNow + " a.m.");
+                    }
+
+
                     notes.setNote(rec);
                     databaseNotes.child(id).setValue(notes);
 
@@ -478,5 +499,37 @@ public class RecordActivity extends AppCompatActivity implements View.OnClickLis
         }else {
             Log.e("TTS", "Initialization failed");
         }
+    }
+
+    public String monthToString(int monthNo){
+       String monthString = "";
+
+        if (monthNo == 0) {
+            monthString = "January";
+        } else if (monthNo == 1) {
+            monthString = "February";
+        } else if (monthNo == 2) {
+            monthString = "March";
+        } else if (monthNo == 3) {
+            monthString = "April";
+        } else if (monthNo == 4) {
+            monthString = "May";
+        } else if (monthNo == 5) {
+            monthString = "June";
+        } else if (monthNo == 6) {
+            monthString = "July";
+        } else if (monthNo == 7) {
+            monthString = "August";
+        } else if (monthNo == 8) {
+            monthString = "September";
+        } else if (monthNo == 9) {
+            monthString = "October";
+        } else if (monthNo == 10) {
+            monthString = "November";
+        } else if (monthNo == 11) {
+            monthString = "December";
+        }
+
+        return monthString;
     }
 }

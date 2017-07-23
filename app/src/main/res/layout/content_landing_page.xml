@@ -40,7 +40,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:srcCompat="@drawable/mic" />
 
-    <TextView
+    <com.example.dobit.recall.HelveticaWorld
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="24dp" />
 
-    <TextView
+    <com.example.dobit.recall.HelveticaWorld
         android:id="@+id/tvQuestion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <com.example.dobit.recall.HelveticaWorld
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <com.example.dobit.recall.HelveticaWorld
         android:id="@+id/tvA"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
